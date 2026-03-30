@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gaming Laptop Showdown</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080b10;
+    --surface: #0d1117;
+    --card: #111820;
+    --border: #1e2d3d;
+    --accent: #00f5c4;
+    --accent2: #ff6b35;
+    --accent3: #7b61ff;
+    --text: #d0dce8;
+    --muted: #5a7085;
+    --highlight: #162230;
+    --rtx5: #ff6b35;
+    --rtx4: #00c8ff;
+    --amd: #ed1c24;
+    --intel: #0068b5;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Barlow', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* animated grid bg */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,245,196,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,245,196,0.025) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  header {
+    position: relative;
+    z-index: 1;
+    padding: 60px 20px 40px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(180deg, rgba(0,245,196,0.04) 0%, transparent 100%);
+  }
+
+  .header-eyebrow {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    opacity: 0.8;
+  }
+
+  h1 {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: clamp(2.4rem, 6vw, 4.2rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -1px;
+    text-transform: uppercase;
+  }
+
+  h1 span {
+    color: var(--accent);
+    position: relative;
+  }
+
+  h1 span::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    left: 0; right: 0;
+    height: 2px;
+    background: var(--accent);
+    opacity: 0.4;
+  }
+
+  .subtitle {
+    margin-top: 14px;
+    font-size: 14px;
+    color: var(--muted);
+    font-weight: 300;
+    letter-spacing: 0.5px;
+  }
+
+  .currency-badge {
+    display: inline-block;
+    margin-top: 16px;
+    padding: 4px 12px;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 2px;
+  }
+
+  /* Controls */
+  .controls {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    padding: 20px 30px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(13,17,23,0.95);
+    backdrop-filter: blur(10px);
+  }
+
+  .controls-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-right: 4px;
+  }
+
+  .sort-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 7px 16px;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.2s;
+  }
+
+  .sort-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .sort-btn.active {
+    background: rgba(0,245,196,0.08);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .filter-divider {
+    width: 1px;
+    height: 20px;
+    background: var(--border);
+    margin: 0 4px;
+  }
+
+  .count-badge {
+    margin-left: auto;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  /* Grid */
+  .grid {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 16px;
+    padding: 30px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  /* Card */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+    position: relative;
+    animation: fadeUp 0.4s ease both;
+  }
+
+  .card:hover {
+    transform: translateY(-4px);
+    border-color: var(--accent);
+    box-shadow: 0 0 30px rgba(0,245,196,0.08), 0 16px 40px rgba(0,0,0,0.4);
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .card:hover::before { opacity: 1; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .card-header {
+    padding: 18px 20px 14px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(135deg, var(--highlight) 0%, transparent 100%);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .brand {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .brand-asus { color: #5bc8f5; }
+  .brand-lenovo { color: #e8343c; }
+  .brand-acer { color: #83c741; }
+  .brand-hp { color: #0096d6; }
+
+  .model-name {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: 0.5px;
+    color: #eaf2f8;
+  }
+
+  .price-block {
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .price-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 3px;
+  }
+
+  .price {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+
+  .price .currency {
+    font-size: 13px;
+    font-weight: 500;
+    opacity: 0.7;
+    margin-right: 2px;
+  }
+
+  /* Rank badge */
+  .rank {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--muted);
+  }
+
+  /* Specs */
+  .specs {
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+  }
+
+  .spec-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+  }
+
+  .spec-icon {
+    width: 18px;
+    flex-shrink: 0;
+    text-align: center;
+    font-size: 12px;
+    opacity: 0.5;
+  }
+
+  .spec-label {
+    color: var(--muted);
+    font-size: 11px;
+    min-width: 52px;
+    font-family: 'Share Tech Mono', monospace;
+    letter-spacing: 0.5px;
+  }
+
+  .spec-value {
+    color: var(--text);
+    font-weight: 500;
+    font-size: 13px;
+    flex: 1;
+  }
+
+  /* GPU chip */
+  .gpu-chip {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 2px;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+
+  .gpu-rtx5 {
+    background: rgba(255,107,53,0.12);
+    border: 1px solid rgba(255,107,53,0.3);
+    color: var(--rtx5);
+  }
+
+  .gpu-rtx4 {
+    background: rgba(0,200,255,0.08);
+    border: 1px solid rgba(0,200,255,0.25);
+    color: var(--rtx4);
+  }
+
+  /* CPU chip */
+  .cpu-amd {
+    display: inline-block;
+    padding: 1px 6px;
+    background: rgba(237,28,36,0.1);
+    border: 1px solid rgba(237,28,36,0.25);
+    border-radius: 2px;
+    color: #ff6b6b;
+    font-size: 10px;
+    font-family: 'Share Tech Mono', monospace;
+    margin-left: 6px;
+  }
+
+  .cpu-intel {
+    display: inline-block;
+    padding: 1px 6px;
+    background: rgba(0,104,181,0.12);
+    border: 1px solid rgba(0,104,181,0.3);
+    border-radius: 2px;
+    color: #5badff;
+    font-size: 10px;
+    font-family: 'Share Tech Mono', monospace;
+    margin-left: 6px;
+  }
+
+  /* Warning tag */
+  .warning-tag {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0 20px 16px;
+    padding: 8px 12px;
+    background: rgba(255,107,53,0.08);
+    border: 1px solid rgba(255,107,53,0.3);
+    border-radius: 3px;
+    font-size: 11px;
+    color: var(--rtx5);
+    font-family: 'Share Tech Mono', monospace;
+    letter-spacing: 0.3px;
+  }
+
+  .warning-tag svg { flex-shrink: 0; }
+
+  /* Card footer */
+  .card-footer {
+    padding: 10px 20px 14px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    padding: 3px 8px;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.5px;
+  }
+
+  .tag-hot {
+    border-color: rgba(255,107,53,0.4);
+    color: var(--rtx5);
+    background: rgba(255,107,53,0.06);
+  }
+
+  .tag-value {
+    border-color: rgba(0,245,196,0.3);
+    color: var(--accent);
+    background: rgba(0,245,196,0.05);
+  }
+
+  /* Link */
+  .card-link {
+    display: block;
+    margin: 0 20px 14px;
+    padding: 8px 14px;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    color: var(--muted);
+    text-decoration: none;
+    text-transform: uppercase;
+    text-align: center;
+    transition: all 0.2s;
+  }
+
+  .card-link:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(0,245,196,0.04);
+  }
+
+  /* Rank highlight */
+  .rank-1 { border-color: rgba(0,245,196,0.4); }
+  .rank-1::after {
+    content: '★ BEST VALUE';
+    position: absolute;
+    top: -1px; left: -1px;
+    padding: 2px 10px;
+    background: var(--accent);
+    color: var(--bg);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    font-weight: 700;
+    border-radius: 3px 0 3px 0;
+  }
+
+  /* Stats bar */
+  .stat-bar-wrap {
+    margin: 0 20px 0;
+    padding-bottom: 14px;
+  }
+
+  .stat-bar-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 2px;
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .stat-bar {
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .stat-fill {
+    height: 100%;
+    border-radius: 2px;
+    background: linear-gradient(90deg, var(--accent3), var(--accent));
+    transition: width 0.6s ease;
+  }
+
+  /* Separator in specs */
+  .spec-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 4px 0;
+    opacity: 0.5;
+  }
+
+  /* Footer */
+  footer {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 30px;
+    border-top: 1px solid var(--border);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 2px;
+  }
+
+  /* Unavailable */
+  .card-unavailable {
+    opacity: 0.55;
+    filter: grayscale(40%);
+  }
+  .card-unavailable:hover {
+    transform: none;
+    border-color: rgba(255,107,53,0.4);
+    box-shadow: 0 0 20px rgba(255,107,53,0.06);
+  }
+  .card-unavailable::before { display: none; }
+
+  .unavailable-banner {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 20px 14px;
+    padding: 8px 12px;
+    background: rgba(255, 80, 80, 0.07);
+    border: 1px solid rgba(255, 80, 80, 0.35);
+    border-radius: 3px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: #ff6b6b;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .card-link-unavailable {
+    display: block;
+    margin: 0 20px 14px;
+    padding: 8px 14px;
+    border: 1px solid rgba(255,80,80,0.3);
+    border-radius: 2px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    color: #ff6b6b;
+    text-decoration: none;
+    text-transform: uppercase;
+    text-align: center;
+    transition: all 0.2s;
+    opacity: 0.7;
+  }
+  .card-link-unavailable:hover {
+    opacity: 1;
+    border-color: rgba(255,80,80,0.6);
+    background: rgba(255,80,80,0.05);
+  }
+
+  @media (max-width: 600px) {
+    .grid { padding: 16px; gap: 12px; }
+    .controls { padding: 14px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-eyebrow">// MALAYSIA MARKET — PRICE COMPARISON</div>
+  <h1>Gaming Laptop <span>Showdown</span></h1>
+  <p class="subtitle">8 contenders · All prices in Malaysian Ringgit</p>
+  <div class="currency-badge">RM · MYR · 2024–2025</div>
+</header>
+
+<div class="controls" id="controls">
+  <span class="controls-label">Sort by</span>
+  <button class="sort-btn active" data-sort="price-asc">Price ↑</button>
+  <button class="sort-btn" data-sort="price-desc">Price ↓</button>
+  <div class="filter-divider"></div>
+  <button class="sort-btn" data-sort="gpu">GPU Tier</button>
+  <button class="sort-btn" data-sort="cpu">CPU Speed</button>
+  <button class="sort-btn" data-sort="hz">Refresh Rate</button>
+  <div class="filter-divider"></div>
+  <button class="sort-btn" data-sort="amd">AMD Only</button>
+  <button class="sort-btn" data-sort="intel">Intel Only</button>
+  <button class="sort-btn" data-sort="all">All</button>
+  <span class="count-badge" id="countBadge">8 laptops</span>
+</div>
+
+<div class="grid" id="grid"></div>
+
+<footer>// DATA ACCURATE AS OF LISTING DATE · PRICES MAY CHANGE · VERIFY BEFORE PURCHASE</footer>
+
+<script>
+const laptops = [
+  {
+    id: 1,
+    brand: 'ASUS',
+    brandClass: 'brand-asus',
+    model: 'TUF Gaming F16 FX607V-URL009W',
+    price: 4599,
+    gpu: 'GeForce RTX™ 4050',
+    gpuClass: 'gpu-rtx4',
+    gpuTier: 4050,
+    gpuGen: 4,
+    cpu: 'Intel® Core™ 5 210H',
+    cpuClass: 'cpu-intel',
+    cpuType: 'intel',
+    cpuBoost: 4.8,
+    ram: '16GB DDR5',
+    storage: '512GB SSD',
+    display: '16" FHD+ 144Hz',
+    hz: 144,
+    srgb: '100% sRGB',
+    notes: [],
+    tags: ['16-INCH'],
+    link: 'https://www.asus.com/my/laptops/for-gaming/tuf-gaming/asus-tuf-gaming-f16-2024/',
+    warning: null,
+  },
+  {
+    id: 2,
+    brand: 'LENOVO',
+    brandClass: 'brand-lenovo',
+    model: 'LOQ 15ARP9 (83JC00EDMJ)',
+    price: 4499,
+    gpu: 'GeForce RTX 4060',
+    gpuClass: 'gpu-rtx4',
+    gpuTier: 4060,
+    gpuGen: 4,
+    cpu: 'AMD Ryzen 7 7435HS',
+    cpuClass: 'cpu-amd',
+    cpuType: 'amd',
+    cpuBoost: 4.5,
+    ram: '12GB DDR5-4800',
+    storage: '512GB SSD',
+    display: '15.6" FHD 144Hz',
+    hz: 144,
+    srgb: null,
+    notes: ['RTX 4060 — highest GPU in this range'],
+    tags: ['RTX 4060', 'BEST GPU'],
+    link: 'https://www.lenovo.com/my/en/p/laptops/loq-laptops/lenovo-loq-15arp9/len101q0009',
+    unavailable: true,
+    warning: null,
+  },
+  {
+    id: 3,
+    brand: 'ACER',
+    brandClass: 'brand-acer',
+    model: 'Nitro V 15 ANV15-52-7287',
+    price: 4699,
+    gpu: 'GeForce RTX™ 4050 6GB',
+    gpuClass: 'gpu-rtx4',
+    gpuTier: 4050,
+    gpuGen: 4,
+    cpu: 'Intel® Core™ 7 240H',
+    cpuClass: 'cpu-intel',
+    cpuType: 'intel',
+    cpuBoost: 5.2,
+    ram: '16GB DDR5',
+    storage: '512GB SSD',
+    display: '15.6" FHD 165Hz',
+    hz: 165,
+    srgb: null,
+    notes: ['Deca-core · Highest boost clock (5.2GHz)'],
+    tags: ['165Hz', 'CORE 7'],
+    link: 'https://store.acer.com/en-my/laptops/gaming',
+    warning: null,
+  },
+  {
+    id: 4,
+    brand: 'ACER',
+    brandClass: 'brand-acer',
+    model: 'Nitro V16s Ai ANV16S-41-R8T2',
+    price: 4999,
+    gpu: 'GeForce RTX™ 5050 8GB GDDR7',
+    gpuClass: 'gpu-rtx5',
+    gpuTier: 5050,
+    gpuGen: 5,
+    cpu: 'AMD Ryzen™ 5 240',
+    cpuClass: 'cpu-amd',
+    cpuType: 'amd',
+    cpuBoost: 5.0,
+    ram: '16GB DDR5 5600MHz',
+    storage: '512GB Gen4 NVMe',
+    display: '16" 180Hz 100% sRGB',
+    hz: 180,
+    srgb: '100% sRGB',
+    notes: ['RTX 50-series · GDDR7 · 180Hz · RGB keyboard'],
+    tags: ['RTX 5050', 'GDDR7', '180Hz', '16-INCH'],
+    link: 'https://store.acer.com/en-my/laptops/gaming',
+    warning: null,
+  },
+  {
+    id: 5,
+    brand: 'ACER',
+    brandClass: 'brand-acer',
+    model: 'Nitro V 15 ANV15-52-529N',
+    price: 4399,
+    gpu: 'GeForce RTX™ 5050 GDDR7',
+    gpuClass: 'gpu-rtx5',
+    gpuTier: 5050,
+    gpuGen: 5,
+    cpu: 'Intel® Core™ i5-13420H',
+    cpuClass: 'cpu-intel',
+    cpuType: 'intel',
+    cpuBoost: 4.6,
+    ram: '16GB DDR4 3200MHz',
+    storage: '512GB Gen4 NVMe',
+    display: '15.6" FHD 180Hz',
+    hz: 180,
+    srgb: '63% sRGB',
+    notes: ['DDR4 (not DDR5)', '63% sRGB — lower color coverage', '2-Year warranty incl. intl. travel'],
+    tags: ['RTX 5050', 'GDDR7', '180Hz', '2YR WARRANTY'],
+    link: 'https://store.acer.com/en-my/laptops/gaming',
+    warning: '⚠ VERIFY VRAM: Listed as 8GB or 6GB GDDR7 — confirm before purchase',
+  },
+  {
+    id: 6,
+    brand: 'HP',
+    brandClass: 'brand-hp',
+    model: 'Victus 15 fa2446TX',
+    price: 4299,
+    gpu: 'GeForce RTX™ 4050',
+    gpuClass: 'gpu-rtx4',
+    gpuTier: 4050,
+    gpuGen: 4,
+    cpu: 'Intel® Core™ 5 210H',
+    cpuClass: 'cpu-intel',
+    cpuType: 'intel',
+    cpuBoost: 4.8,
+    ram: '16GB',
+    storage: '512GB SSD',
+    display: '15.6" FHD',
+    hz: 60,
+    srgb: null,
+    notes: ['Refresh rate not specified'],
+    tags: [],
+    link: 'https://www.hp.com/my-en/shop/victus-gaming-laptop-15-fa2446tx-cv6p4pa.html#specs',
+    warning: null,
+  },
+  {
+    id: 7,
+    brand: 'HP',
+    brandClass: 'brand-hp',
+    model: 'Victus 15 fb3256AX',
+    price: 4199,
+    gpu: 'GeForce RTX 4050',
+    gpuClass: 'gpu-rtx4',
+    gpuTier: 4050,
+    gpuGen: 4,
+    cpu: 'AMD Ryzen™ 7 7445H',
+    cpuClass: 'cpu-amd',
+    cpuType: 'amd',
+    cpuBoost: 4.7,
+    ram: '16GB',
+    storage: '512GB SSD',
+    display: '15.6" FHD',
+    hz: 60,
+    srgb: null,
+    notes: [],
+    tags: [],
+    link: 'https://www.hp.com/my-en/shop/victus-gaming-laptop-15-fb3256ax-d4qm3pa.html',
+    warning: null,
+  },
+  {
+    id: 8,
+    brand: 'HP',
+    brandClass: 'brand-hp',
+    model: 'Victus 15 fb3149AX',
+    price: 4099,
+    gpu: 'GeForce RTX 4050',
+    gpuClass: 'gpu-rtx4',
+    gpuTier: 4050,
+    gpuGen: 4,
+    cpu: 'AMD Ryzen™ 7 7445HS (8C)',
+    cpuClass: 'cpu-amd',
+    cpuType: 'amd',
+    cpuBoost: 4.7,
+    ram: '16GB',
+    storage: '512GB SSD',
+    display: '15.6" FHD',
+    hz: 60,
+    srgb: null,
+    notes: [],
+    tags: ['CHEAPEST'],
+    link: 'https://www.hp.com/my-en/shop/victus-gaming-laptop-15-fb3149ax-bz5f3pa.html#specs',
+    warning: null,
+  },
+];
+
+const maxPrice = Math.max(...laptops.map(l => l.price));
+const minPrice = Math.min(...laptops.map(l => l.price));
+
+let currentFilter = 'all';
+let currentSort = 'price-asc';
+
+function getValueScore(l) {
+  let score = 0;
+  if (l.gpuTier === 4060) score += 40;
+  if (l.gpuGen === 5) score += 30;
+  score += (l.cpuBoost * 5);
+  score += (l.hz / 10);
+  score -= ((l.price - minPrice) / 100);
+  return score;
+}
+
+function renderCards(data) {
+  const grid = document.getElementById('grid');
+  const badge = document.getElementById('countBadge');
+  grid.innerHTML = '';
+  badge.textContent = data.length + ' laptop' + (data.length !== 1 ? 's' : '');
+
+  // find best value
+  const scores = data.map(l => getValueScore(l));
+  const maxScore = Math.max(...scores);
+
+  data.forEach((l, i) => {
+    const isTop = getValueScore(l) === maxScore;
+    const priceBarWidth = Math.round(((l.price - minPrice) / (maxPrice - minPrice)) * 100);
+
+    const card = document.createElement('div');
+    card.className = 'card' + (isTop ? ' rank-1' : '') + (l.unavailable ? ' card-unavailable' : '');
+    card.style.animationDelay = (i * 0.06) + 's';
+
+    let notesHtml = '';
+    if (l.notes.length) {
+      notesHtml = l.notes.map(n =>
+        `<div class="spec-row"><span class="spec-icon">›</span><span class="spec-value" style="color:var(--muted);font-size:12px">${n}</span></div>`
+      ).join('');
+    }
+
+    let warningHtml = '';
+    if (l.warning) {
+      warningHtml = `<div class="warning-tag">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        ${l.warning}
+      </div>`;
+    }
+
+    let tagsHtml = '';
+    if (l.tags.length) {
+      tagsHtml = l.tags.map(t => {
+        const cls = (t === 'BEST GPU' || t === 'RTX 5050' || t === 'GDDR7') ? 'tag-hot' : (t === 'CHEAPEST' || t === 'BEST VALUE') ? 'tag-value' : '';
+        return `<span class="tag ${cls}">${t}</span>`;
+      }).join('');
+    }
+
+    let linkHtml = '';
+    if (l.link && l.unavailable) {
+      linkHtml = `<a class="card-link-unavailable" href="${l.link}" target="_blank" rel="noopener">↗ View archived listing</a>`;
+    } else if (l.link) {
+      linkHtml = `<a class="card-link" href="${l.link}" target="_blank" rel="noopener">→ View Listing</a>`;
+    }
+
+    let unavailableHtml = l.unavailable
+      ? `<div class="unavailable-banner">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+          No longer available
+         </div>`
+      : '';
+
+    card.innerHTML = `
+      <div class="card-header">
+        <div>
+          <div class="brand ${l.brandClass}">${l.brand}</div>
+          <div class="model-name">${l.model}</div>
+        </div>
+        <div class="price-block">
+          <div class="price-label">Price</div>
+          <div class="price"><span class="currency">RM</span>${l.price.toLocaleString()}</div>
+        </div>
+      </div>
+
+      <div class="specs">
+        <div class="spec-row">
+          <span class="spec-icon">🎮</span>
+          <span class="spec-label">GPU</span>
+          <span class="spec-value"><span class="gpu-chip ${l.gpuClass}">${l.gpu}</span></span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-icon">⚡</span>
+          <span class="spec-label">CPU</span>
+          <span class="spec-value">${l.cpu}<span class="${l.cpuClass}">${l.cpuType.toUpperCase()}</span></span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-icon">🖥</span>
+          <span class="spec-label">Display</span>
+          <span class="spec-value">${l.display}${l.srgb ? ' · ' + l.srgb : ''}</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-icon">💾</span>
+          <span class="spec-label">RAM</span>
+          <span class="spec-value">${l.ram}</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-icon">💿</span>
+          <span class="spec-label">Storage</span>
+          <span class="spec-value">${l.storage}</span>
+        </div>
+        ${notesHtml}
+      </div>
+
+      <div class="stat-bar-wrap">
+        <div class="stat-bar-label">
+          <span>PRICE POSITION</span>
+          <span>RM${l.price.toLocaleString()}</span>
+        </div>
+        <div class="stat-bar">
+          <div class="stat-fill" style="width:${priceBarWidth}%"></div>
+        </div>
+      </div>
+
+      ${warningHtml}
+      ${unavailableHtml}
+      ${linkHtml}
+
+      <div class="card-footer">
+        ${isTop ? '<span class="tag tag-value">★ TOP PICK</span>' : ''}
+        ${tagsHtml}
+        <span class="tag">${l.cpuBoost}GHz BOOST</span>
+        ${l.hz > 60 ? `<span class="tag">${l.hz}Hz</span>` : ''}
+      </div>
+    `;
+
+    grid.appendChild(card);
+  });
+}
+
+function applySort(data, sort) {
+  const d = [...data];
+  if (sort === 'price-asc') return d.sort((a, b) => a.price - b.price);
+  if (sort === 'price-desc') return d.sort((a, b) => b.price - a.price);
+  if (sort === 'gpu') return d.sort((a, b) => b.gpuTier - a.gpuTier || b.gpuGen - a.gpuGen);
+  if (sort === 'cpu') return d.sort((a, b) => b.cpuBoost - a.cpuBoost);
+  if (sort === 'hz') return d.sort((a, b) => b.hz - a.hz);
+  return d;
+}
+
+function applyFilter(data, filter) {
+  if (filter === 'amd') return data.filter(l => l.cpuType === 'amd');
+  if (filter === 'intel') return data.filter(l => l.cpuType === 'intel');
+  return data;
+}
+
+function update() {
+  let data = applyFilter(laptops, currentFilter);
+  data = applySort(data, currentSort);
+  renderCards(data);
+}
+
+document.getElementById('controls').addEventListener('click', e => {
+  const btn = e.target.closest('.sort-btn');
+  if (!btn) return;
+  const sort = btn.dataset.sort;
+
+  if (sort === 'all' || sort === 'amd' || sort === 'intel') {
+    currentFilter = sort;
+  } else {
+    currentSort = sort;
+  }
+
+  document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  update();
+});
+
+update();
+</script>
+</body>
+</html>
