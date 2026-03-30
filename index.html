@@ -345,6 +345,12 @@
     letter-spacing: 0.5px;
   }
 
+  .gpu-rtx3 {
+    background: rgba(100,180,100,0.08);
+    border: 1px solid rgba(100,180,100,0.25);
+    color: #7ecf7e;
+  }
+
   .gpu-rtx5 {
     background: rgba(255,107,53,0.12);
     border: 1px solid rgba(255,107,53,0.3);
@@ -582,7 +588,7 @@
 <header>
   <div class="header-eyebrow">// MALAYSIA MARKET — PRICE COMPARISON</div>
   <h1>Gaming Laptop <span>Showdown</span></h1>
-  <p class="subtitle">8 contenders · All prices in Malaysian Ringgit</p>
+  <p class="subtitle">12 contenders · All prices in Malaysian Ringgit</p>
   <div class="currency-badge">RM · MYR · 2024–2025</div>
 </header>
 
@@ -598,7 +604,7 @@
   <button class="sort-btn" data-sort="amd">AMD Only</button>
   <button class="sort-btn" data-sort="intel">Intel Only</button>
   <button class="sort-btn" data-sort="all">All</button>
-  <span class="count-badge" id="countBadge">8 laptops</span>
+  <span class="count-badge" id="countBadge">12 laptops</span>
 </div>
 
 <div class="grid" id="grid"></div>
@@ -800,6 +806,102 @@ const laptops = [
     link: 'https://www.hp.com/my-en/shop/victus-gaming-laptop-15-fb3149ax-bz5f3pa.html#specs',
     warning: null,
   },
+  {
+    id: 9,
+    brand: 'ASUS',
+    brandClass: 'brand-asus',
+    model: 'Gaming V16 V3607VJ (JRP188WS)',
+    price: 3199,
+    gpu: 'GeForce RTX™ 3050 6GB GDDR6',
+    gpuClass: 'gpu-rtx3',
+    gpuTier: 3050,
+    gpuGen: 3,
+    cpu: 'Intel® Core™ 5 210H',
+    cpuClass: 'cpu-intel',
+    cpuType: 'intel',
+    cpuBoost: 4.8,
+    ram: '8GB DDR5-5600',
+    storage: '512GB SSD',
+    display: '16" WUXGA 16:10 144Hz',
+    hz: 144,
+    srgb: '45% NTSC',
+    notes: ['8GB RAM only — lower than others', '45% NTSC — basic color coverage', '16:10 taller display ratio'],
+    tags: ['CHEAPEST', '16-INCH', '16:10'],
+    link: 'https://shop.asus.com/my/asus-gaming-v16-v3607v-jrp188ws.html',
+    warning: null,
+  },
+  {
+    id: 10,
+    brand: 'ASUS',
+    brandClass: 'brand-asus',
+    model: 'Gaming V16 V3607VU (URP205WS)',
+    price: 3799,
+    gpu: 'GeForce RTX™ 4050 6GB GDDR6',
+    gpuClass: 'gpu-rtx4',
+    gpuTier: 4050,
+    gpuGen: 4,
+    cpu: 'Intel® Core™ 5 210H',
+    cpuClass: 'cpu-intel',
+    cpuType: 'intel',
+    cpuBoost: 4.8,
+    ram: '16GB DDR5-5600',
+    storage: '512GB SSD',
+    display: '16" WUXGA 16:10 144Hz',
+    hz: 144,
+    srgb: '45% NTSC',
+    notes: ['45% NTSC — basic color coverage', '16:10 taller display ratio'],
+    tags: ['16-INCH', '16:10'],
+    link: 'https://shop.asus.com/my/asus-gaming-v16-v3607v-urp205ws.html',
+    warning: null,
+  },
+  {
+    id: 11,
+    brand: 'ASUS',
+    brandClass: 'brand-asus',
+    model: 'Gaming V16 V3607VH (HRP206WS)',
+    price: 4799,
+    gpu: 'GeForce RTX™ 5050 8GB GDDR7',
+    gpuClass: 'gpu-rtx5',
+    gpuTier: 5050,
+    gpuGen: 5,
+    cpu: 'Intel® Core™ 5 210H',
+    cpuClass: 'cpu-intel',
+    cpuType: 'intel',
+    cpuBoost: 4.8,
+    ram: '16GB DDR5-5600',
+    storage: '512GB SSD',
+    display: '16" WUXGA 16:10 144Hz',
+    hz: 144,
+    srgb: '45% NTSC',
+    notes: ['RTX 5050 GDDR7 on a 16:10 display', '45% NTSC — basic color coverage'],
+    tags: ['RTX 5050', 'GDDR7', '16-INCH', '16:10'],
+    link: 'https://shop.asus.com/my/asus-gaming-v16-v3607v-hrp206ws.html',
+    warning: null,
+  },
+  {
+    id: 12,
+    brand: 'ASUS',
+    brandClass: 'brand-asus',
+    model: 'Gaming V16 V3607VM (MRP207WS)',
+    price: 4999,
+    gpu: 'GeForce RTX™ 5060 8GB GDDR7',
+    gpuClass: 'gpu-rtx5',
+    gpuTier: 5060,
+    gpuGen: 5,
+    cpu: 'Intel® Core™ 5 210H',
+    cpuClass: 'cpu-intel',
+    cpuType: 'intel',
+    cpuBoost: 4.8,
+    ram: '16GB DDR5-5600',
+    storage: '512GB SSD',
+    display: '16" WUXGA 16:10 144Hz',
+    hz: 144,
+    srgb: '45% NTSC',
+    notes: ['RTX 5060 — highest GPU in full list', 'GDDR7 · 16:10 display', '45% NTSC — basic color coverage'],
+    tags: ['RTX 5060', 'GDDR7', 'BEST GPU', '16-INCH', '16:10'],
+    link: 'https://shop.asus.com/my/asus-gaming-v16-v3607v-mrp207ws.html',
+    warning: null,
+  },
 ];
 
 const maxPrice = Math.max(...laptops.map(l => l.price));
@@ -810,8 +912,9 @@ let currentSort = 'price-asc';
 
 function getValueScore(l) {
   let score = 0;
-  if (l.gpuTier === 4060) score += 40;
-  if (l.gpuGen === 5) score += 30;
+  if (l.gpuTier === 5060) score += 60;
+  else if (l.gpuTier === 4060) score += 40;
+  else if (l.gpuGen === 5) score += 30;
   score += (l.cpuBoost * 5);
   score += (l.hz / 10);
   score -= ((l.price - minPrice) / 100);
@@ -854,7 +957,7 @@ function renderCards(data) {
     let tagsHtml = '';
     if (l.tags.length) {
       tagsHtml = l.tags.map(t => {
-        const cls = (t === 'BEST GPU' || t === 'RTX 5050' || t === 'GDDR7') ? 'tag-hot' : (t === 'CHEAPEST' || t === 'BEST VALUE') ? 'tag-value' : '';
+        const cls = (t === 'BEST GPU' || t === 'RTX 5050' || t === 'RTX 5060' || t === 'GDDR7') ? 'tag-hot' : (t === 'CHEAPEST' || t === 'BEST VALUE') ? 'tag-value' : '';
         return `<span class="tag ${cls}">${t}</span>`;
       }).join('');
     }
@@ -932,7 +1035,7 @@ function renderCards(data) {
         ${isTop ? '<span class="tag tag-value">★ TOP PICK</span>' : ''}
         ${tagsHtml}
         <span class="tag">${l.cpuBoost}GHz BOOST</span>
-        ${l.hz > 60 ? `<span class="tag">${l.hz}Hz</span>` : ''}
+        ${l.hz > 60 && !l.tags.some(t => t.includes('Hz')) ? `<span class="tag">${l.hz}Hz</span>` : ''}
       </div>
     `;
 
